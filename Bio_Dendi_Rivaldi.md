@@ -1,0 +1,1 @@
+NIM: 24130500011 Email: RivaldyDendy459@gmail.com GitHub: Louce Bio: Saya mahasiswa Data Science Universitas Cakrawala, sedang belajar Git & kolaborasi
