@@ -1,0 +1,24 @@
+{
+  "name": "wad03_tim_belajar",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Louce/WAD03_Tim_Belajar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Louce/WAD03_Tim_Belajar/issues"
+  },
+  "homepage": "https://github.com/Louce/WAD03_Tim_Belajar#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
