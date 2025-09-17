@@ -2,17 +2,16 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-// Route for the homepage
+const aboutUsRoute = require('./routes/aboutUsRoutes');
+const greetingRoutes = require('./routes/greetingRoutes');
+
 app.get('/', (req, res) => {
-  res.send('Welcome to the homepage with Express!');
+  res.send('<h1>Welcome to the homepage with Express!</h1><p><a href="/aboutus">About Us</a></p>');
 });
 
-// Route for the about page
-app.get('/about', (req, res) => {
-  res.send('This is the about page with Express.');
-});
+app.use('/aboutus', aboutUsRoute);
+app.use('/greeting', greetingRoutes);
 
-// Handle 404 - Not Found
 app.use((req, res) => {
   res.status(404).send('404 Not Found');
 });
