@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Louce/WAD03_Tim_Belajar#readme",
   "dependencies": {
+    "espress": "^0.0.0",
     "express": "^5.1.0"
-  }
+  },
+  "type": "commonjs"
 }
