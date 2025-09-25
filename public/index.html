@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Project Demo UI</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 1.5rem; line-height:1.4; }
+    h1 { margin-top:0; }
+    section { border:1px solid #ccc; padding:1rem; margin-bottom:1rem; border-radius:6px; }
+    code { background:#f5f5f5; padding:2px 4px; border-radius:4px; }
+    label { display:block; margin-top:.5rem; }
+    input, select { padding:.4rem; }
+    button { margin-top:.6rem; padding:.5rem .9rem; cursor:pointer; }
+    pre { background:#111; color:#eee; padding:.75rem; border-radius:6px; overflow:auto; max-height:240px; }
+    .flex { display:flex; gap:1rem; flex-wrap:wrap; }
+    .half { flex:1 1 300px; }
+  </style>
+</head>
+<body>
+  <h1>API Feature Playground</h1>
+  <p>Quick manual tester for <code>/aboutus</code>, <code>/greeting</code>, and <code>/users</code> endpoints.</p>
+
+  <section id="aboutus-section">
+    <h2>Team Members (/aboutus)</h2>
+    <div class="flex">
+      <div class="half">
+        <button onclick="loadTeam()">Load All Members</button>
+        <label>Get by ID:
+          <input id="aboutusId" placeholder="e.g. dendi-rivaldi" />
+        </label>
+        <button onclick="getMember()">Fetch Member</button>
+      </div>
+      <div class="half">
+        <pre id="aboutusOutput">(results)</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="greeting-section">
+    <h2>Greeting (/greeting)</h2>
+    <div class="flex">
+      <div class="half">
+        <label>Query param name:
+          <input id="greetQuery" placeholder="Dendi" />
+        </label>
+        <button onclick="greetByQuery()">Greet via ?name=</button>
+        <label>Path param name:
+          <input id="greetPath" placeholder="Hasana" />
+        </label>
+        <button onclick="greetByPath()">Greet via /greeting/:name</button>
+      </div>
+      <div class="half">
+        <pre id="greetingOutput">(results)</pre>
+      </div>
+    </div>
+  </section>
+
+  <section id="users-section">
+    <h2>Users (/users)</h2>
+    <div class="flex">
+      <div class="half">
+        <button onclick="listUsers()">List Users</button>
+        <hr />
+        <h3>Create User</h3>
+        <label>Username <input id="newUsername" /></label>
+        <label>Name <input id="newName" /></label>
+        <label>Email <input id="newEmail" /></label>
+        <label>Role
+          <select id="newRole">
+            <option value="buyer">buyer</option>
+            <option value="seller">seller</option>
+          </select>
+        </label>
+        <button onclick="createUser()">Create</button>
+        <hr />
+        <h3>Get / Patch User</h3>
+        <label>Username <input id="detailUsername" placeholder="existing username" /></label>
+        <button onclick="getUserDetail()">Get Detail</button>
+        <label>Patch Name <input id="patchName" /></label>
+        <label>Patch Email <input id="patchEmail" /></label>
+        <label>Patch Role
+          <select id="patchRole">
+            <option value="">(leave unchanged)</option>
+            <option value="buyer">buyer</option>
+            <option value="seller">seller</option>
+          </select>
+        </label>
+        <button onclick="patchUser()">Apply Patch</button>
+      </div>
+      <div class="half">
+        <pre id="usersOutput">(results)</pre>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const base = '';
+    function set(outId, data){
+      const el = document.getElementById(outId);
+      if(typeof data === 'string') el.textContent = data; else el.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // About Us
+    async function loadTeam(){
+      const res = await fetch(base + '/aboutus');
+      set('aboutusOutput', await res.json());
+    }
+    async function getMember(){
+      const id = document.getElementById('aboutusId').value.trim();
+      if(!id) return set('aboutusOutput','Enter an id');
+      const res = await fetch(base + '/aboutus/' + id);
+      try { set('aboutusOutput', await res.json()); } catch(e){ set('aboutusOutput', await res.text()); }
+    }
+
+    // Greeting
+    async function greetByQuery(){
+      const name = document.getElementById('greetQuery').value.trim();
+      const url = name ? base + '/greeting?name=' + encodeURIComponent(name) : base + '/greeting';
+      const res = await fetch(url);
+      set('greetingOutput', await res.text());
+    }
+    async function greetByPath(){
+      const name = document.getElementById('greetPath').value.trim();
+      if(!name) return set('greetingOutput','Enter a name');
+      const res = await fetch(base + '/greeting/' + encodeURIComponent(name));
+      set('greetingOutput', await res.text());
+    }
+
+    // Users
+    async function listUsers(){
+      const res = await fetch(base + '/users');
+      set('usersOutput', await res.json());
+    }
+    async function createUser(){
+      const body = {
+        username: document.getElementById('newUsername').value.trim(),
+        name: document.getElementById('newName').value.trim(),
+        email: document.getElementById('newEmail').value.trim(),
+        role: document.getElementById('newRole').value
+      };
+      const res = await fetch(base + '/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+      const txt = res.headers.get('content-type')?.includes('application/json') ? await res.json() : await res.text();
+      set('usersOutput', txt);
+    }
+    async function getUserDetail(){
+      const username = document.getElementById('detailUsername').value.trim();
+      if(!username) return set('usersOutput','Enter a username');
+      const res = await fetch(base + '/users/' + encodeURIComponent(username));
+      const txt = res.headers.get('content-type')?.includes('application/json') ? await res.json() : await res.text();
+      set('usersOutput', txt);
+    }
+    async function patchUser(){
+      const username = document.getElementById('detailUsername').value.trim();
+      if(!username) return set('usersOutput','Enter a username first');
+      const patch = {};
+      const name = document.getElementById('patchName').value.trim();
+      const email = document.getElementById('patchEmail').value.trim();
+      const role = document.getElementById('patchRole').value;
+      if(name) patch.name = name;
+      if(email) patch.email = email;
+      if(role) patch.role = role;
+      if(!Object.keys(patch).length) return set('usersOutput','Nothing to patch');
+      const res = await fetch(base + '/users/' + encodeURIComponent(username), { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(patch)});
+      const txt = res.headers.get('content-type')?.includes('application/json') ? await res.json() : await res.text();
+      set('usersOutput', txt);
+    }
+  </script>
+</body>
+</html>

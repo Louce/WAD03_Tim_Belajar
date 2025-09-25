@@ -3,3 +3,9 @@
 
 # Dependencies
 /node_modules
+
+# GitHub
+/.github
+
+# postman
+/postman
