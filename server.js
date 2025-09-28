@@ -5,6 +5,8 @@ const port = 3000;
 const aboutUsRoutes = require('./routes/aboutUsRoutes');
 const greetingRoutes = require('./routes/greetingRoutes');
 const usersRoutes = require('./routes/usersRoutes');
+const productsRoutes = require('./routes/productsRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 // Serve static demo UI
 app.use(express.static('public'));
@@ -16,6 +18,8 @@ app.get('/', (req, res) => {
 app.use('/aboutus', aboutUsRoutes);
 app.use('/greeting', greetingRoutes);
 app.use('/users', usersRoutes);
+app.use('/products', productsRoutes);
+app.use('/cart', cartRoutes);
 
 app.use((req, res) => {
   res.status(404).send('404 Not Found');
