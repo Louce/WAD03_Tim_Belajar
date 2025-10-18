@@ -1,7 +1,7 @@
 // routes/products.js
 const express = require("express");
 const router = express.Router();
-let products = require("../data/productsStore");
+let products = require("../repositories/productsStore");
 
 // GET /products → ambil semua produk
 router.get("/", (req, res) => {
