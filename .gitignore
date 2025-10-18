@@ -13,9 +13,6 @@
 # Environment variables (contains sensitive data)
 .env
 
-# Test coverage
-/coverage
-
 # Logs
 *.log
 npm-debug.log*
