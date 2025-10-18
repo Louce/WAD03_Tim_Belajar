@@ -4,7 +4,7 @@ const port = 3000;
 
 const aboutUsRoutes = require('./routes/aboutUsRoutes');
 const greetingRoutes = require('./routes/greetingRoutes');
-const usersRoutes = require('./routes/usersRoutes');
+const userRoutes = require('./routes/userRoutes');
 const productsRoutes = require('./routes/productsRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 
@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 app.use('/aboutus', aboutUsRoutes);
 app.use('/greeting', greetingRoutes);
-app.use('/users', usersRoutes);
+app.use('/users', userRoutes);
 app.use('/products', productsRoutes);
 app.use('/cart', cartRoutes);
 
