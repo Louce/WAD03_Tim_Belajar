@@ -2,6 +2,8 @@
 const app = express();
 const port = 3000;
 
+const { pool } = require('./database');
+
 const aboutUsRoutes = require('./routes/aboutUsRoutes');
 const greetingRoutes = require('./routes/greetingRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -25,6 +27,11 @@ app.use((req, res) => {
   res.status(404).send('404 Not Found');
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(port, async () => {
+  try {
+    await pool.query('SELECT 1'); // test koneksi DB
+    console.log(`Server running on http://localhost:${port} & DB connected`);
+  } catch (err) {
+    console.error('❌ DB connection error:', err);
+  }
 });

@@ -1,7 +1,4 @@
-// data/productsStore.js
-let products = [
-  { product_name: "Laptop", product_category: "Electronics", price: 12000000, owner: "hasana" },
-  { product_name: "Sneakers", product_category: "Fashion", price: 850000, owner: "rizqy" }
+module.exports = [
+  { product_name: 'Laptop', product_category: 'Electronics', price: 15000000, owner: 'seller01' },
+  { product_name: 'Phone', product_category: 'Electronics', price: 5000000, owner: 'seller02' },
 ];
-
-module.exports = products;
